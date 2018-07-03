@@ -1,0 +1,152 @@
+﻿@model TakeAwayMeat.ViewModel.MeatViewModel
+@*<script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>*@
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Welcome To Take Away Meat</h2>
+
+
+
+@using (Html.BeginForm("TotalCost", "Meat"))
+{
+
+    <b> Inventory </b>
+
+    <table id="mytable" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Meat Type</th>
+                <th>Amount in Stock(Lb's)</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Inventory in Model.InventoryList)
+            {
+                <tr id="Inventory">
+                    <td>@Model.MeatKindList.Single(c => c.Id == Inventory.Id).MeatName</td>
+                    <td>@Inventory.QuantityInStock</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+    <b>Rates</b>
+
+    <table id="mytable" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Meat Type</th>
+                <th>Cost Per Lb ($)</th>
+                <th>Cost Per Lb Boneless ($)</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var MeatRate in Model.MeatRatesList)
+            {
+                <tr>
+                    <td>@Model.MeatKindList.Single(c => c.Id == MeatRate.MeatKindId).MeatName</td>
+                    <td>@MeatRate.CostPerLb</td>
+                    <td>@MeatRate.CostPerLbBoneless</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @*<script>
+            document.getElementById('mytable').style.backgroundColor= "magenta";
+        </script>*@
+
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.MeatKinds.Id)
+        @Html.DropDownListFor(c => c.MeatKinds.Id, new SelectList(Model.MeatKindList, "Id", "MeatName"), "Select Meat Type", new { @class = "form-control" })
+        @*@Html.ValidationMessageFor(m => m.Meats.MeatRates.MeatType)*@
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Meats.Quantity)
+        @Html.TextBoxFor(m => m.Meats.Quantity, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Meats.Quantity)
+    </div>
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Meats.IsBoneless) Please check-Box ifBoneless ?
+        </label>
+    </div>
+
+ 
+
+    <button type="submit" class="btn btn-primary">TotalCost</button>
+    <br />
+
+    
+   @*@if (@Model.MeatKinds.Id == 0)
+    {
+            <h2>Total Cost Of your Purchase: @Model.Meats.SubTotal</h2>
+    }*@
+ }
+
+<br />
+<div class="form-group">
+    <h4> @Html.LabelFor(m => m.TotalCost) : @Model.TotalCost</h4>
+</div>
+
+<script>
+    var table = document.getElementById("mytable") // Picks the Table by the id: mytable
+    var Row = document.getElementById("Inventory")// Picks the row by the Id: Inventory
+    var Rowlength = table.rows.length; // gets no of rows in the table.
+
+    //var CellQuantity = document.getElementById("Quantity")
+
+
+    for (var i = 1; i < Rowlength; i++) {
+        var rowcells = table.rows.item(i).cells; // picks cells in that particular row
+
+        var CellLength = rowcells.length; // gets no of cells of current row
+
+
+
+        for (var j = 0; j < CellLength; j++) { //iterating for every cell of the current row
+            if (j >= 1) {
+                var cellValue = rowcells.item(j).innerHTML;
+                var cellintegervalue = parseInt(cellValue);
+                if (cellintegervalue <= 30) {
+
+                    var table = document.getElementById('mytable');
+                    var row = table.getElementsByTagName('tr')[i];
+                    row.className += "Extremely-Low";
+
+                }
+                else if (cellintegervalue >= 30 && cellintegervalue <= 50) {
+                    var table = document.getElementById('mytable');
+                    var row = table.getElementsByTagName('tr')[i];
+                    row.className += "Moderately-Enough";
+                }
+                else if (cellintegervalue > 50) {
+                   
+                    var table = document.getElementById('mytable');
+                    var row = table.getElementsByTagName('tr')[i];
+                    row.className += "Adequate";
+                }
+
+
+            }
+        }
+
+    }
+</script>
+
+
+
+
+
+

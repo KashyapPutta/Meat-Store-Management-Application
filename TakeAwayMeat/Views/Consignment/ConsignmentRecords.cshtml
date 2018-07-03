@@ -1,0 +1,80 @@
+﻿@model TakeAwayMeat.ViewModel.ConsignmentViewModel
+@{
+    ViewBag.Title = "SuppliesView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<h2> @Html.ActionLink("Add Consignment", "AddConsignment", "Consignment")</h2>
+
+
+<br />
+<br />
+
+@using (Html.BeginForm("FilterConsignments", "Consignment"))
+{
+    <h2>Consignments</h2>
+   <p>
+       <b>Search by Date:</b>
+
+       <div class="form-group">
+           @Html.LabelFor(m => m.FromDate)
+           @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control" })
+           @Html.ValidationMessageFor(m => m.FromDate)
+       </div>
+        
+       <div class="form-group">
+           @Html.LabelFor(m => m.ToDate)
+           @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control" })
+           @Html.ValidationMessageFor(m => m.ToDate)
+       </div>
+
+     
+       <div class="form-group">
+           @Html.LabelFor(m => m.Consignment.VendorId)
+           @Html.DropDownListFor(m => m.Consignment.VendorId, new SelectList(Model.VendorList, "VendorId", "VendorName"), "Select Vendor Name", new { @class = "form-control" })
+           @Html.ValidationMessageFor(m => m.Consignment.VendorId)
+       </div>
+
+       <div class="form-group">
+           @Html.LabelFor(m => m.MeatKinds.MeatName)
+           @Html.DropDownListFor(m => m.MeatKinds.MeatName, new SelectList(Model.MeatKindList, "MeatName", "MeatName"), "Select Meat Type", new { @class = "form-control" })
+           @Html.ValidationMessageFor(m => m.MeatKinds.MeatName)
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+   </p>
+
+
+   
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Supplier Name</th>
+                <th>Supplied Meat Type</th>
+                <th>Quantity</th>
+                <th>Supplied Date And Time</th>
+                <th>Bill Amount</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var EachSupplies in Model.ConsignmentList)
+            {
+                <tr>
+                    <td>@Model.VendorList.Single(c => c.VendorId == EachSupplies.VendorId).VendorName</td>
+                    <td>@EachSupplies.MeatType</td>
+                    <td>@EachSupplies.Quantity</td>
+                    <td>@EachSupplies.SuppliedDate</td>
+                    <td>@EachSupplies.BillAmount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+}
+
+

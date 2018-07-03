@@ -1,0 +1,86 @@
+﻿@model TakeAwayMeat.ViewModel.TransactionViewModel
+
+
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+            }
+</style>
+
+@{
+    ViewBag.Title = "TransactionHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Transaction History</h2>
+
+@using (Html.BeginForm("SearchHistory", "Transactions", FormMethod.Get))
+{
+    <p>
+
+        <b>Search by Date:</b>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Fromdate)
+            @Html.TextBoxFor(m => m.Fromdate, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Todate)
+            @Html.TextBoxFor(m => m.Todate, new { @class = "form-control" })
+        </div>
+
+        <br />
+        <br />
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MeatKinds.Id)
+            @Html.DropDownListFor(m => m.MeatKinds.Id, new SelectList(Model.MeatKindList, "Id", "MeatName"), "Select Meat Type", new { @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </p>
+
+}
+
+
+
+ @if (Model.TransactionList != null)
+{
+
+<div class="form-group">
+    <h4> @Html.LabelFor(m => m.TransactionTotal) : @Model.TransactionTotal</h4>
+</div>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Quantity Purchase(Lb)</th>
+            <th>Meat Type</th>
+            <th>Total Purchase Amount($)</th>
+            <th>Bone Meat Quantity Purchased(Lb)</th>
+            <th>Boneless Meat Quantity Purchased(Lb)</th>
+            <th>Transaction Date and Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Transaction in Model.TransactionList)
+        {
+            <tr>
+                <td>@Transaction.TransactionId</td>
+                <td>@Transaction.QuantityPurchased</td>
+                <td>@Model.MeatKindList.Single(c => c.Id == Transaction.MeatKindId).MeatName</td>
+                <td>@Transaction.TotalPurchaseAmount</td>
+                <td>@Transaction.BoneMeatQuantity</td>
+                <td>@Transaction.BonelessMeatQuantity</td>
+                <td>@Transaction.TransactionDateTime</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+}

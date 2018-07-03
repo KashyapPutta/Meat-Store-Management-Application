@@ -1,0 +1,81 @@
+﻿@model TakeAwayMeat.ViewModel.VendorViewModel
+
+@{
+    ViewBag.Title = "VendorDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("AddVendor", "Vendor", FormMethod.Post))
+{
+    <h2>VendorDetails</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>VendorId</th>
+                <th>VendorName</th>
+                <th>Contact No:</th>
+                <th>Email Id:</th>
+                <th>Address</th>
+                <th>Date Added</th>
+                <th>Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var EachVendor in Model.VendorList)
+            {
+                <tr>
+                    <td>@EachVendor.VendorId</td>
+                    <td>@EachVendor.VendorName</td>
+                    <td>@EachVendor.ContactNum</td>
+                    <td>@EachVendor.EmailId</td>
+                    <td>@EachVendor.Address</td>
+                    <td>@EachVendor.DateAdded</td>
+                    <td>@Html.ActionLink("Edit", "GetVendor", new { id = EachVendor.VendorId }) | @Html.ActionLink("Delete", "DeleteVendor", new { id = EachVendor.VendorId })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @Html.ValidationSummary(true, "Please Fix the following errors.")
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Vendor.VendorName)
+        @Html.TextBoxFor(m => m.Vendor.VendorName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Vendor.VendorName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Vendor.ContactNum)
+        @Html.TextBoxFor(m => m.Vendor.ContactNum, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Vendor.ContactNum)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Vendor.EmailId)
+        @Html.EditorFor(m => m.Vendor.EmailId, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Vendor.EmailId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Vendor.Address)
+        @Html.TextBoxFor(m => m.Vendor.Address, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Vendor.Address)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Vendor</button>
+}
+
+@*<script>
+function validateEmail(EmailId)
+{
+    var emailgiven = document.getElementById()
+    var re = /\S+@\S+\.\S+/;
+    return re.test(EmailId);
+}
+
+</script>*@

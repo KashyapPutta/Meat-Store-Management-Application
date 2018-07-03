@@ -1,0 +1,22 @@
+﻿@model TakeAwayMeat.Models.Customers
+@{
+    ViewBag.Title = "CustomerRegistrationForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CustomerRegistrationForm</h2>
+
+@using (Html.BeginForm("SaveCustomerDetails", "Customer"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.NameOfCustomer)
+        @Html.TextBoxFor(m => m.NameOfCustomer, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ContactNo)
+        @Html.TextBoxFor(m => m.ContactNo, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Customer</button>
+}

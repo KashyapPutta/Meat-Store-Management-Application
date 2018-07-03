@@ -1,0 +1,54 @@
+﻿@model TakeAwayMeat.ViewModel.MeatRatesViewModel
+
+@{
+    ViewBag.Title = "RateCard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("EditRates", "MeatRates"))
+{
+<h2>RateCard</h2>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Meat Type</th>
+            <th>Cost PerLb($)</th>
+            <th>Cost PerLb BoneLess($)</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Rate in Model.MeatRatesList)
+        {
+            <tr>
+                <td>@Model.MeatKindList.Single(c => c.Id == Rate.MeatKindId).MeatName</td>
+                <td>@Rate.CostPerLb</td>
+                <td>@Rate.CostPerLbBoneless</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>If You Want Update any of the Items Rates, please Choose The Item from the below Dropdown box and Update the Cost.</div>
+
+<div class="form-group">
+    @Html.LabelFor(c => c.MeatKind.Id)
+    @Html.DropDownListFor(c => c.MeatKind.Id, new SelectList(Model.MeatKindList, "Id", "MeatName"), "Select Meat Type", new { @class = "form-control" })
+    @*@Html.ValidationMessageFor(m => m.Meatrates.MeatType)*@
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.MeatRates.CostPerLb)
+    @Html.TextBoxFor(m => m.MeatRates.CostPerLb, new { @class = "form-control" })
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.MeatRates.CostPerLbBoneless)
+    @Html.TextBoxFor(m => m.MeatRates.CostPerLbBoneless, new { @class = "form-control" })
+</div>
+
+<button type="submit" class="btn btn-primary">Save</button>
+
+}
+
